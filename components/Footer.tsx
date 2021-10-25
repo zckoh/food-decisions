@@ -1,5 +1,4 @@
 import { Box, Stack, Container } from "@chakra-ui/react";
-import * as React from "react";
 import Copyright from "./Copyright";
 import Logo from "./Logo";
 import SocialMediaLinks from "./SocialMediaLinks";

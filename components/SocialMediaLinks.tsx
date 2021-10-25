@@ -1,30 +1,33 @@
-import { ButtonGroup, ButtonGroupProps, IconButton } from "@chakra-ui/react";
-import * as React from "react";
+import {
+    ButtonGroup,
+    ButtonGroupProps,
+    IconButton,
+    Link,
+} from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGithub,faLinkedin, faTwitter } from "@fortawesome/free-brands-svg-icons";
+import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
+import { faGlobeEurope } from "@fortawesome/free-solid-svg-icons";
 
 const SocialMediaLinks = (props: ButtonGroupProps) => (
     <ButtonGroup variant="ghost" color="gray.600" {...props}>
-        <IconButton
-            as="a"
-            href="#"
-            aria-label="LinkedIn"
-            icon={
-                <FontAwesomeIcon icon={faLinkedin} fontSize="20px" />
-            }
-        />
-        <IconButton
-            as="a"
-            href="#"
-            aria-label="GitHub"
-            icon={<FontAwesomeIcon icon={faGithub} fontSize="20px" />}
-        />
-        <IconButton
-            as="a"
-            href="#"
-            aria-label="Twitter"
-            icon={<FontAwesomeIcon icon={faTwitter} fontSize="20px" />}
-        />
+        <Link isExternal href="https://www.linkedin.com/in/zackoh">
+            <IconButton
+                aria-label="LinkedIn"
+                icon={<FontAwesomeIcon icon={faLinkedin} fontSize="20px" />}
+            />
+        </Link>
+        <Link isExternal href="https://zckoh.github.io">
+            <IconButton
+                aria-label="Twitter"
+                icon={<FontAwesomeIcon icon={faGlobeEurope} fontSize="20px" />}
+            />
+        </Link>
+        <Link isExternal href="https://github.com/zckoh/food-decisions">
+            <IconButton
+                aria-label="GitHub"
+                icon={<FontAwesomeIcon icon={faGithub} fontSize="20px" />}
+            />
+        </Link>
     </ButtonGroup>
 );
 

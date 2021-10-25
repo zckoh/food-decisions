@@ -1,11 +1,11 @@
-import React from "react";
-import Footer from "./Footer";
+import { ReactNode } from "react";
 import { Flex } from "@chakra-ui/react";
 import Head from "next/head";
+import Footer from "./Footer";
 import NavBar from "./NavBar";
 
 interface LayoutProps {
-    children: React.ReactNode;
+    children: ReactNode;
 }
 
 const Layout = ({ children }: LayoutProps) => (
@@ -16,7 +16,7 @@ const Layout = ({ children }: LayoutProps) => (
         <Flex
             direction="column"
             align="center"
-            maxW={{ xl: "1200px" }}
+            maxW={{ xl: "1500px" }}
             m="0 auto"
         >
             <NavBar />

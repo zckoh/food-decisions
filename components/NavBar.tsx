@@ -1,17 +1,15 @@
-import React, { useState } from "react";
-import { IconButton } from "@chakra-ui/button";
-import { Text, Link } from "@chakra-ui/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState, ReactNode } from "react";
+import { Text, Link, Spacer, Button, IconButton } from "@chakra-ui/react";
 import { useColorMode, useColorModeValue } from "@chakra-ui/color-mode";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useUser } from "@auth0/nextjs-auth0";
 import {
     faMoon,
     faSun,
     faTimes,
     faBars,
 } from "@fortawesome/free-solid-svg-icons";
-import { Spacer } from "@chakra-ui/react";
 import { Box, Flex } from "@chakra-ui/layout";
-import NextLink from "next/link";
 import Logo from "./Logo";
 
 interface MenuToggleProps {
@@ -34,13 +32,13 @@ const MenuToggle = ({ toggle, isOpen }: MenuToggleProps) => {
     );
 };
 
-interface MenuItemProps {
-    children: React.ReactNode;
+interface NavLinkProps {
+    children: ReactNode;
     isLast?: boolean;
     to: string;
 }
 
-const MenuItem = ({ children, isLast, to = "/", ...rest }: MenuItemProps) => {
+const NavLink = ({ children, isLast, to = "/", ...rest }: NavLinkProps) => {
     const color = useColorModeValue("gray.900", "gray.100");
 
     return (
@@ -51,75 +49,98 @@ const MenuItem = ({ children, isLast, to = "/", ...rest }: MenuItemProps) => {
             color={color}
             {...rest}
         >
-            <NextLink href={to} passHref>
-                <Link>{children}</Link>
-            </NextLink>
+            <Link href={to}>{children}</Link>
         </Text>
     );
 };
 
-interface MenuLinksProps {
+interface NavbarLinksProps {
     isOpen: boolean;
 }
 
-const MenuLinks = ({ isOpen }: MenuLinksProps) => (
-    <Box
-        display={{ base: isOpen ? "block" : "none", md: "block" }}
-        flexBasis={{ base: "100%", md: "auto" }}
-    >
-        <Flex
-            align={["center", "center", "center", "center"]}
-            justify={["center", "space-between", "flex-end", "flex-end"]}
-            direction={["column", "row", "row", "row"]}
-            pt={[4, 4, 0, 0]}
+const NavbarLinks = ({ isOpen }: NavbarLinksProps) => {
+    const { user, isLoading } = useUser();
+    return (
+        <Box
+            display={{ base: isOpen ? "block" : "none", md: "block" }}
+            flexBasis={{ base: "100%", md: "auto" }}
         >
-            <MenuItem to="/">Home</MenuItem>
-            <MenuItem to="/how">How It works </MenuItem>
-            <MenuItem to="/faetures">Features </MenuItem>
-
-            {/* <MenuItem to="/signup" isLast>
-            <Button
-                size="sm"
-                rounded="md"
-                color={[
-                    "primary.500",
-                    "primary.500",
-                    "white",
-                    "white",
-                ]}
-                bg={[
-                    "white",
-                    "white",
-                    "primary.500",
-                    "primary.500",
-                ]}
-                _hover={{
-                    bg: [
-                        "primary.100",
-                        "primary.100",
-                        "primary.600",
-                        "primary.600",
-                    ],
-                }}
+            <Flex
+                align={["center", "center", "center", "center"]}
+                justify={["center", "space-between", "flex-end", "flex-end"]}
+                direction={["column", "row", "row", "row"]}
+                pt={[4, 4, 0, 0]}
             >
-                Create Account
-            </Button>
-        </MenuItem> */}
-        </Flex>
-    </Box>
-);
+                <NavLink to="/">Home</NavLink>
+                <NavLink to="/how">How It works </NavLink>
+                <NavLink to="/faetures">Features </NavLink>
+
+                {!isLoading && !user && (
+                    <NavLink to="/api/auth/login" isLast>
+                        <Button
+                            size="md"
+                            rounded="md"
+                            color={[
+                                "orange.500",
+                                "orange.500",
+                                "white",
+                                "white",
+                            ]}
+                            bg={["white", "white", "orange.500", "orange.500"]}
+                            _hover={{
+                                bg: [
+                                    "orange.100",
+                                    "orange.100",
+                                    "orange.600",
+                                    "orange.600",
+                                ],
+                            }}
+                        >
+                            Log in
+                        </Button>
+                    </NavLink>
+                )}
+                {user && (
+                    <NavLink to="/api/auth/logout" isLast>
+                        <Button
+                            size="md"
+                            rounded="md"
+                            color={[
+                                "orange.500",
+                                "orange.500",
+                                "white",
+                                "white",
+                            ]}
+                            bg={["white", "white", "orange.500", "orange.500"]}
+                            _hover={{
+                                bg: [
+                                    "orange.100",
+                                    "orange.100",
+                                    "orange.600",
+                                    "orange.600",
+                                ],
+                            }}
+                        >
+                            Log out
+                        </Button>
+                    </NavLink>
+                )}
+            </Flex>
+        </Box>
+    );
+};
 
 const ColorToggleButton = () => {
     const { colorMode, toggleColorMode } = useColorMode();
-    const color = useColorModeValue("gray.900", "gray.100");
+    const color = useColorModeValue("black", "white");
 
     return (
         <IconButton
             aria-label="color-mode-toggle"
             onClick={toggleColorMode}
             color={color}
-            ml={{ base: "15", md: "none" }}
-            mr={{ base: "none", md: "15" }}
+            ml={{ base: "none", md: "15" }}
+            mr={{ base: "15", md: "none" }}
             icon={
                 <FontAwesomeIcon
                     icon={colorMode === "light" ? faMoon : faSun}
@@ -141,17 +162,17 @@ const NavBar = (props: any) => {
             w="100%"
             mb={8}
             p={8}
-            bg={["blue.500", "primary.500", "transparent", "transparent"]}
-            color={["white", "white", "primary.700", "primary.700"]}
+            bg={["orange.500", "orange.500", "transparent", "transparent"]}
+            color={["white", "white", "orange.700", "orange.700"]}
             {...props}
         >
             <Flex align="center">
                 <Logo />
             </Flex>
             <Spacer />
-            <MenuToggle toggle={toggle} isOpen={isOpen} />
             <ColorToggleButton />
-            <MenuLinks isOpen={isOpen} />
+            <MenuToggle toggle={toggle} isOpen={isOpen} />
+            <NavbarLinks isOpen={isOpen} />
         </Flex>
     );
 };
